@@ -3,426 +3,312 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>US professors connected to Pakistan — a directory for students</title>
-<meta name="description" content="Find professors at US universities who were born, raised or educated in Pakistan. Search by field and by the Pakistani university they attended, then write a strong first email.">
-<meta property="og:title" content="US professors connected to Pakistan — a directory for students">
-<meta property="og:description" content="Search by field and by the Pakistani university they attended: UET, NUST, Aga Khan, Dow, LUMS, Punjab University and more.">
+<title>Rabta — US professors with roots in Pakistan, a directory for students</title>
+<meta name="description" content="Find professors at US universities who were born, raised or educated in Pakistan. Search by the Pakistani university they attended, their field and where they teach, then write a strong first email.">
+<meta name="theme-color" content="#0A1611">
+<meta property="og:title" content="Rabta — US professors with roots in Pakistan">
+<meta property="og:description" content="A free directory for Pakistani students: find US faculty who studied at your university — Aga Khan, King Edward, UET, NUST, LUMS, Punjab University and more.">
 <meta property="og:type" content="website">
-<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'><rect width='64' height='64' rx='14' fill='%230A1611'/><circle cx='22' cy='38' r='5' fill='%235BC796'/><circle cx='44' cy='24' r='5' fill='%23E0B158'/><path d='M22 38 C 30 20, 36 42, 44 24' stroke='%23E8EFE9' stroke-width='3' fill='none' stroke-linecap='round'/></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --bg: #EEF2EF;
-    --surface: #FFFFFF;
-    --ink: #142019;
-    --muted: #56645D;
-    --line: #D3DCD7;
-    --accent: #0A6A4B;
-    --accent-ink: #FFFFFF;
-    --chip: #E0EBE5;
-    --chip-hover: #D2E3DA;
-    --focus: #0A6A4B;
-    color-scheme: light;
-    box-sizing: border-box;
-    padding-top: env(safe-area-inset-top, 0px);
-    padding-bottom: env(safe-area-inset-bottom, 0px);
-  }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) {
-      --bg: #0E1412;
-      --surface: #151D1A;
-      --ink: #E6EEEA;
-      --muted: #98A9A1;
-      --line: #27342F;
-      --accent: #5CCB9F;
-      --accent-ink: #08140F;
-      --chip: #1B2A24;
-      --chip-hover: #23372F;
-      --focus: #5CCB9F;
-      color-scheme: dark;
-    }
-  }
-  :root[data-theme="dark"] {
-    --bg: #0E1412; --surface: #151D1A; --ink: #E6EEEA; --muted: #98A9A1; --line: #27342F;
-    --accent: #5CCB9F; --accent-ink: #08140F; --chip: #1B2A24; --chip-hover: #23372F; --focus: #5CCB9F;
-    color-scheme: dark;
-  }
-  *, *::before, *::after { box-sizing: inherit; }
-  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
-    font-size: 1rem;
-    line-height: 1.55;
-    -webkit-font-smoothing: antialiased;
-  }
-  a { color: var(--accent); text-underline-offset: 0.18em; }
-  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
-
-  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.25rem; }
-
-  /* Hero */
-  header { padding: 3.5rem 0 2rem; }
-  h1, h2, h3 { font-family: "Literata", Georgia, "Times New Roman", serif; font-weight: 700; }
-  h1 {
-    font-size: clamp(2rem, 5vw, 3.25rem);
-    line-height: 1.1;
-    letter-spacing: -0.015em;
-    margin: 0 0 1rem;
-    max-width: 22ch;
-  }
-  .lede { font-size: 1.125rem; color: var(--muted); max-width: 40rem; margin: 0 0 2.25rem; }
-  .start-label { font-size: 1.25rem; margin: 0 0 0.25rem; }
-  .start-hint { color: var(--muted); margin: 0 0 1rem; font-size: 0.95rem; }
-
-  /* The one bold element: alma-mater tiles */
-  .schools {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
-    gap: 0.5rem;
-    margin: 0;
-    padding: 0;
-    list-style: none;
-  }
-  .schools li { display: flex; }
-  .schools li[hidden] { display: none; }
-  .school {
-    flex: 1;
-    width: 100%;
-    text-align: left;
-    border: 0;
-    background: var(--chip);
-    color: var(--ink);
-    padding: 0.8rem 0.95rem 0.75rem;
-    border-radius: 0.6rem;
-    font: inherit;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 0.1rem;
-    min-height: 4.25rem;
-  }
-  .school:hover { background: var(--chip-hover); }
-  .school .sname { font-weight: 600; line-height: 1.25; }
-  .school .scount { font-size: 0.85rem; color: var(--muted); }
-  .school[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
-  .school[aria-pressed="true"] .scount { color: var(--accent-ink); opacity: 0.85; }
-
-  .more-schools {
-    margin: 0.75rem 0 0;
-    font: inherit; font-weight: 600; background: none; border: 0; padding: 0;
-    color: var(--accent); text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer;
-  }
-
-  /* Guide */
-  .guide {
-    margin: 2.5rem 0 0;
-    background: var(--surface);
-    border-left: 4px solid var(--accent);
-    border-radius: 0 0.5rem 0.5rem 0;
-    padding: 1.1rem 1.4rem;
-  }
-  .guide summary {
-    cursor: pointer;
-    font-family: "Literata", Georgia, serif;
-    font-weight: 700;
-    font-size: 1.2rem;
-  }
-  .guide ul { margin: 0.9rem 0 0.25rem; padding-left: 1.2rem; max-width: 46rem; }
-  .guide li { margin: 0.45rem 0; }
-  .guide p { margin: 0.75rem 0 0; color: var(--muted); max-width: 46rem; }
-
-  /* Toolbar */
-  .toolbar {
-    margin: 2.5rem 0 0;
-    display: grid;
-    grid-template-columns: 1fr minmax(12rem, 16rem);
-    gap: 0.75rem;
-    align-items: end;
-  }
-  .field label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; }
-  .field input, .field select {
-    width: 100%;
-    font: inherit;
-    color: var(--ink);
-    background: var(--surface);
-    border: 1px solid var(--line);
-    border-radius: 0.5rem;
-    padding: 0.65rem 0.8rem;
-  }
-  .options {
-    grid-column: 1 / -1;
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    align-items: center;
-    gap: 0.5rem 1.5rem;
-  }
-  .check { display: inline-flex; gap: 0.5rem; align-items: center; cursor: pointer; }
-  .check input { width: 1.1rem; height: 1.1rem; accent-color: var(--accent); }
-  .count { color: var(--muted); margin: 0; }
-  .clear {
-    font: inherit; background: none; border: 0; color: var(--accent);
-    text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer; padding: 0;
-  }
-
-  /* Results */
-  .results {
-    margin: 1rem 0 0;
-    padding: 0;
-    list-style: none;
-    background: var(--surface);
-    border-radius: 0.75rem;
-    overflow: hidden;
-  }
-  .prof {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
-    gap: 0.4rem 2rem;
-    padding: 1.25rem 1.4rem;
-    border-top: 1px solid var(--line);
-  }
-  .prof:first-child { border-top: 0; }
-  .prof h3 { font-size: 1.2rem; margin: 0 0 0.2rem; line-height: 1.25; }
-  .prof .ptitle { margin: 0; font-size: 0.95rem; }
-  .prof .place { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.95rem; }
-  .prof .research { margin: 0; }
-  .prof .tie { margin: 0.45rem 0 0; font-size: 0.95rem; }
-  .prof .tie span { color: var(--muted); }
-  .prof .actions { margin: 0.6rem 0 0; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
-  .prof .actions a { font-weight: 600; }
-  .badge {
-    font-size: 0.8rem;
-    padding: 0.1rem 0.5rem;
-    border-radius: 999px;
-    border: 1px solid var(--line);
-    color: var(--muted);
-  }
-  .prof .actions .source { font-weight: 400; color: var(--muted); }
-  .show-more {
-    display: block;
-    margin: 1rem auto 0;
-    font: inherit; font-weight: 600;
-    color: var(--accent-ink); background: var(--accent);
-    border: 0; border-radius: 0.5rem;
-    padding: 0.7rem 1.4rem;
-    cursor: pointer;
-  }
-  .show-more[hidden] { display: none; }
-  .empty { padding: 2rem 1.4rem; }
-  .empty p { margin: 0 0 0.5rem; }
-
-  footer { padding: 3rem 0 4rem; color: var(--muted); font-size: 0.95rem; }
-  footer h2 { color: var(--ink); font-size: 1.15rem; margin: 0 0 0.5rem; }
-  footer p { max-width: 46rem; margin: 0 0 0.9rem; }
-
-  @media (max-width: 44rem) {
-    header { padding-top: 2.25rem; }
-    .toolbar { grid-template-columns: 1fr; }
-    .prof { grid-template-columns: 1fr; padding: 1.1rem 1rem; }
-    .guide { padding: 1rem 1.1rem; }
-    .schools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  }
-  @media (prefers-reduced-motion: no-preference) {
-    html { scroll-behavior: smooth; }
-  }
-</style>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu:wght@600&text=%D8%B1%D8%A7%D8%A8%D8%B7%DB%81&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<script>
+  (function () {
+    try {
+      var t = localStorage.getItem("rabta.theme");
+      if (t === "light" || t === "dark") document.documentElement.dataset.theme = t;
+    } catch (e) {}
+  })();
+</script>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <h1>Find a professor in the US who knows where you’re coming from</h1>
-    <p class="lede" id="lede">Faculty at US universities who were born, raised or educated in Pakistan. Start with your own university, then narrow by field.</p>
+<a class="skip" href="#directory">Skip to the directory</a>
 
-    <h2 class="start-label" id="schools-label">Where do you study?</h2>
-    <p class="start-hint">Professors who studied at your university are often the most willing to reply.</p>
-    <ul class="schools" id="schools" aria-labelledby="schools-label"></ul>
-    <button type="button" class="more-schools" id="more-schools" aria-expanded="false" hidden></button>
-  </header>
-
-  <details class="guide" open>
-    <summary>Before you email a professor</summary>
-    <ul>
-      <li>Read one or two of their recent papers, and mention something specific from them in your email.</li>
-      <li>Ask one clear question they can answer in a few minutes. “Please guide me” is hard to reply to; “Is your lab taking PhD students in fall 2027?” is easy.</li>
-      <li>Keep it under 150 words. Say who you are, why them, and what you’re asking.</li>
-      <li>Write to each professor individually. Never send the same email to many professors at once.</li>
-      <li>If there’s no reply after two weeks, one short, polite follow-up is fine. After that, move on.</li>
-    </ul>
-    <p>Emails aren’t listed here. Open each professor’s faculty profile to find their current contact details.</p>
-  </details>
-
-  <section aria-labelledby="results-heading">
-    <h2 id="results-heading" class="visually-hidden" style="position:absolute;left:-9999px">Professors</h2>
-    <div class="toolbar" id="toolbar">
-      <div class="field">
-        <label for="q">Search by name, research topic or US university</label>
-        <input id="q" type="search" placeholder="e.g. computer vision, Stanford, cardiology" autocomplete="off">
-      </div>
-      <div class="field">
-        <label for="field">Field</label>
-        <select id="field"><option value="">All fields</option></select>
-      </div>
-      <div class="options">
-        <label class="check"><input type="checkbox" id="current"> Hide emeritus, adjunct and visiting faculty</label>
-        <p class="count" id="count" aria-live="polite"></p>
-      </div>
+<header class="nav" id="nav" data-over="hero">
+  <div class="nav-inner">
+    <a class="brand" href="#top" aria-label="Rabta, back to top">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><circle cx="9" cy="20" r="3.2"/><circle cx="23" cy="11" r="3.2"/><path d="M9 20 C 14 8, 18 24, 23 11"/></svg>
+      </span>
+      <span class="brand-word">Rabta</span>
+      <span class="brand-urdu" lang="ur" aria-hidden="true">رابطہ</span>
+    </a>
+    <nav class="nav-links" aria-label="Sections">
+      <a href="#bridge">Bridge</a>
+      <a href="#map">Map</a>
+      <a href="#directory">Directory</a>
+      <a href="#guide">Writing well</a>
+      <a href="#about">About</a>
+    </nav>
+    <div class="nav-actions">
+      <button type="button" class="nav-btn" id="open-saved" aria-label="Saved professors">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3h12v18l-6-4.5L6 21z"/></svg>
+        <span>Saved</span><span class="nav-count" id="saved-count">0</span>
+      </button>
+      <button type="button" class="nav-btn icon" id="theme-toggle" aria-label="Switch colour theme">
+        <svg class="i-sun" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2.5v2.2M12 19.3v2.2M4.6 4.6l1.6 1.6M17.8 17.8l1.6 1.6M2.5 12h2.2M19.3 12h2.2M4.6 19.4l1.6-1.6M17.8 6.2l1.6-1.6"/></svg>
+        <svg class="i-moon" viewBox="0 0 24 24" aria-hidden="true"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></svg>
+      </button>
     </div>
-    <ul class="results" id="results"></ul>
-    <button type="button" class="show-more" id="show-more" hidden></button>
+  </div>
+</header>
+
+<main id="top">
+  <!-- Hero -->
+  <section class="hero" id="hero" aria-labelledby="hero-title">
+    <div class="hero-sky" aria-hidden="true"></div>
+    <div class="wrap hero-grid">
+      <div class="hero-copy">
+        <p class="eyebrow on-dark"><span class="dot"></span> A free directory for students in Pakistan</p>
+        <h1 id="hero-title" class="hero-title">
+          <span class="line"><span>Find the professor</span></span>
+          <span class="line"><span>who once sat</span></span>
+          <span class="line"><span><em>where you sit.</em></span></span>
+        </h1>
+        <p class="hero-lede" id="hero-lede">Faculty at US universities who were born, raised or educated in Pakistan — searchable by the Pakistani university they attended, their field, and where they teach now.</p>
+        <form class="hero-search" id="hero-search" role="search">
+          <label class="visually-hidden" for="hero-q">Search professors</label>
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+          <input id="hero-q" type="search" placeholder="Try “cardiology”, “NUST” or “Stanford”" autocomplete="off">
+          <button type="submit">Search</button>
+        </form>
+        <div class="hero-suggest" id="hero-suggest" aria-label="Popular searches"></div>
+      </div>
+      <figure class="sky" id="sky">
+        <canvas id="sky-canvas" aria-label="Each dot is one professor, grouped by field. Hover to see who they are; click to open their details." role="img"></canvas>
+        <div class="sky-tip" id="sky-tip" role="status" hidden></div>
+        <figcaption class="sky-caption">Each point of light is one professor, grouped by field. Hover to meet them.</figcaption>
+      </figure>
+    </div>
+    <div class="wrap">
+      <ul class="sky-legend" id="sky-legend" aria-label="Fields"></ul>
+    </div>
   </section>
 
-  <footer>
-    <h2>How people are listed</h2>
-    <p>Everyone here holds an appointment at a US university, and their connection to Pakistan is taken from a public source such as a university profile, a CV or a published interview. The “Connection to Pakistan” line repeats what that source says; it isn’t a label we’ve assigned.</p>
-    <p id="correction-line"></p>
-    <p id="suggest-line"></p>
-    <p id="updated"></p>
-  </footer>
-</div>
+  <!-- Numbers -->
+  <section class="stats" aria-label="The directory in numbers">
+    <div class="wrap stats-grid" id="stats"></div>
+  </section>
 
-<noscript><p style="padding:1rem">This directory needs JavaScript to search and display professors.</p></noscript>
+  <!-- Bridge -->
+  <section class="section" id="bridge" aria-labelledby="bridge-title">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <p class="eyebrow"><span class="num">01</span> Start where you studied</p>
+        <h2 id="bridge-title">The bridge from your campus to theirs</h2>
+        <p class="section-lede">Alumni are the warmest first contact. Follow a Pakistani university across to the US states where its graduates teach today, then pick it to see every one of them.</p>
+      </header>
+      <div class="bridge-tools reveal">
+        <div class="combo" id="school-combo">
+          <label for="school-input">Find your university</label>
+          <div class="combo-box">
+            <input id="school-input" type="text" role="combobox" aria-expanded="false" aria-controls="school-options" aria-autocomplete="list" placeholder="Start typing — e.g. Dow, UET, Quaid-i-Azam" autocomplete="off">
+            <ul class="combo-list" id="school-options" role="listbox" hidden></ul>
+          </div>
+        </div>
+        <p class="bridge-hint">Hover a university or state to trace its links. Click to open the matching professors.</p>
+      </div>
+      <div class="bridge reveal" id="bridge-chart"></div>
+    </div>
+  </section>
+
+  <!-- Map -->
+  <section class="section alt" id="map" aria-labelledby="map-title">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <p class="eyebrow"><span class="num">02</span> Where they teach</p>
+        <h2 id="map-title">A map of 1,000+ open doors</h2>
+        <p class="section-lede">Planning to apply to a particular state, or already admitted somewhere? See who is nearby.</p>
+      </header>
+      <div class="map-layout reveal">
+        <div class="tilemap" id="tilemap" role="group" aria-label="US states"></div>
+        <aside class="map-panel" id="map-panel" aria-live="polite"></aside>
+      </div>
+      <div class="map-scale" id="map-scale" aria-hidden="true"></div>
+    </div>
+  </section>
+
+  <!-- Directory -->
+  <section class="section directory" id="directory" aria-labelledby="dir-title">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <p class="eyebrow"><span class="num">03</span> The directory</p>
+        <h2 id="dir-title">Every professor, in one place</h2>
+      </header>
+      <div class="dir-layout">
+        <aside class="filters" id="filters" aria-label="Filters">
+          <div class="filters-head">
+            <h3>Refine</h3>
+            <button type="button" class="link-btn" id="filters-reset">Reset all</button>
+            <button type="button" class="filters-close" id="filters-close" aria-label="Close filters">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+            </button>
+          </div>
+          <div class="filters-body" id="filters-body"></div>
+          <div class="filters-foot">
+            <button type="button" class="btn primary block" id="filters-apply">Show results</button>
+          </div>
+        </aside>
+        <div class="results">
+          <div class="results-bar">
+            <div class="search-field">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="m16 16 4.5 4.5"/></svg>
+              <label class="visually-hidden" for="q">Search by name, research topic, university or city</label>
+              <input id="q" type="search" placeholder="Search name, research topic, university…" autocomplete="off">
+              <kbd aria-hidden="true">/</kbd>
+            </div>
+            <button type="button" class="btn ghost filters-open" id="filters-open">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M7 12h10M10 18h4"/></svg>
+              Filters <span class="pill-count" id="filters-count" hidden></span>
+            </button>
+          </div>
+          <div class="results-meta">
+            <p class="results-count" id="results-count" aria-live="polite"></p>
+            <div class="results-controls">
+              <label class="select">
+                <span class="visually-hidden">Sort by</span>
+                <select id="sort">
+                  <option value="relevance">Best match</option>
+                  <option value="name">Name, A–Z</option>
+                  <option value="university">US university</option>
+                  <option value="field">Field</option>
+                </select>
+              </label>
+              <div class="seg" role="group" aria-label="Layout">
+                <button type="button" data-view="cards" aria-pressed="true" aria-label="Card view">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><rect x="4" y="4" width="7" height="7" rx="1.5"/><rect x="13" y="4" width="7" height="7" rx="1.5"/><rect x="4" y="13" width="7" height="7" rx="1.5"/><rect x="13" y="13" width="7" height="7" rx="1.5"/></svg>
+                </button>
+                <button type="button" data-view="list" aria-pressed="false" aria-label="List view">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+              </div>
+              <button type="button" class="btn ghost small" id="share-search">
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></svg>
+                Copy link
+              </button>
+            </div>
+          </div>
+          <div class="active-filters" id="active-filters"></div>
+          <div class="grid" id="grid" data-view="cards"></div>
+          <div class="sentinel" id="sentinel" aria-hidden="true"></div>
+          <button type="button" class="btn ghost load-more" id="load-more" hidden></button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guide -->
+  <section class="section alt" id="guide" aria-labelledby="guide-title">
+    <div class="wrap guide-layout">
+      <header class="section-head reveal">
+        <p class="eyebrow"><span class="num">04</span> Writing well</p>
+        <h2 id="guide-title">Five rules that get replies</h2>
+        <p class="section-lede">Professors receive dozens of student emails a week. The ones that get answered are short, specific and personal.</p>
+        <ol class="rules">
+          <li><strong>Read before you write.</strong> Open one or two of their recent papers and mention something specific.</li>
+          <li><strong>Ask one clear question.</strong> “Please guide me” is hard to answer. “Is your lab taking PhD students for fall 2027?” is easy.</li>
+          <li><strong>Stay under 150 words.</strong> Who you are, why them, what you’re asking.</li>
+          <li><strong>One professor, one email.</strong> Never send the same message to many people at once.</li>
+          <li><strong>Follow up once.</strong> If there’s no reply after two weeks, send one short, polite nudge. Then move on.</li>
+        </ol>
+      </header>
+      <div class="compare reveal" id="compare">
+        <div class="seg compare-tabs" role="tablist" aria-label="Example emails">
+          <button type="button" role="tab" id="tab-weak" aria-controls="mail-weak" aria-selected="false">Usually ignored</button>
+          <button type="button" role="tab" id="tab-strong" aria-controls="mail-strong" aria-selected="true">Usually answered</button>
+        </div>
+        <article class="mail weak" id="mail-weak" role="tabpanel" aria-labelledby="tab-weak" hidden>
+          <header><span class="mail-label">Subject</span> Request for guidance</header>
+          <p>Respected Sir/Madam,</p>
+          <p>I am a hardworking and passionate student with a keen interest in research. I have attached my CV for your kind consideration. Kindly guide me regarding admission and scholarships and let me know if there is any opportunity in your lab. I am ready to work on any topic.</p>
+          <p>Waiting for your kind response.</p>
+          <footer><span class="verdict bad">Generic · No question they can answer · Could be sent to anyone</span></footer>
+        </article>
+        <article class="mail strong" id="mail-strong" role="tabpanel" aria-labelledby="tab-strong">
+          <header><span class="mail-label">Subject</span> UET Lahore student — question about your paper on low-cost biosensors</header>
+          <p>Dear Professor Ahmed,</p>
+          <p>I’m in my final year of electrical engineering at UET Lahore, your alma mater. Your recent paper on paper-based biosensors changed how I approached my own final-year project on glucose detection.</p>
+          <p>I plan to apply for PhD programs for fall 2027. Is your group expecting to take new students that year, and is there a recent paper you’d suggest I read first?</p>
+          <p>Thank you for your time,<br>Ayesha Khan</p>
+          <footer><span class="verdict good">Specific · Mentions shared alma mater · One easy question · About 70 words</span></footer>
+        </article>
+        <p class="compare-note">Open any professor in the directory and use <strong>Draft a first email</strong> to start from a structure like this.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section class="section" id="about" aria-labelledby="about-title">
+    <div class="wrap">
+      <header class="section-head reveal">
+        <p class="eyebrow"><span class="num">05</span> About this directory</p>
+        <h2 id="about-title">Built carefully, from public sources</h2>
+      </header>
+      <div class="principles">
+        <article class="principle reveal">
+          <span class="principle-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 4h10l4 4v12H5z"/><path d="M14 4v5h5M8 13h8M8 17h6"/></svg></span>
+          <h3>Every entry is sourced</h3>
+          <p id="about-sourced">Each professor holds an appointment at a US university, and their connection to Pakistan comes from a public source such as a university profile, a CV or a published interview. The “connection” line repeats what that source says; it isn’t a label we’ve assigned.</p>
+        </article>
+        <article class="principle reveal">
+          <span class="principle-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/><path d="M4 20 20 4"/></svg></span>
+          <h3>No email addresses here</h3>
+          <p>To protect professors from spam and keep their contact details current, we link to each official faculty profile instead. Where the profile publishes an email, we tell you so.</p>
+        </article>
+        <article class="principle reveal">
+          <span class="principle-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3 4 6v6c0 4.5 3.4 8.3 8 9 4.6-.7 8-4.5 8-9V6z"/><path d="m9 12 2 2 4-4"/></svg></span>
+          <h3>Professors stay in control</h3>
+          <p id="correction-line">Are you listed here? You can ask for any change, or to be removed, and we’ll update it promptly.</p>
+        </article>
+      </div>
+      <p class="about-note reveal" id="about-note"></p>
+    </div>
+  </section>
+</main>
+
+<footer class="footer">
+  <div class="wrap footer-grid">
+    <div>
+      <a class="brand" href="#top"><span class="brand-word">Rabta</span><span class="brand-urdu" lang="ur" aria-hidden="true">رابطہ</span></a>
+      <p>A volunteer directory to help students in Pakistan reach US academia. Not affiliated with any university.</p>
+    </div>
+    <div>
+      <h2>Help keep it accurate</h2>
+      <p id="suggest-line"></p>
+      <p id="updated"></p>
+    </div>
+  </div>
+</footer>
+
+<!-- Side panel: professor details and saved list -->
+<div class="panel-backdrop" id="panel-backdrop" hidden></div>
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title" hidden tabindex="-1">
+  <div class="panel-top">
+    <div class="panel-nav" id="panel-nav">
+      <button type="button" class="icon-btn" id="panel-prev" aria-label="Previous professor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 6-6 6 6 6"/></svg></button>
+      <button type="button" class="icon-btn" id="panel-next" aria-label="Next professor"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 6 6 6-6 6"/></svg></button>
+      <span class="panel-pos" id="panel-pos"></span>
+    </div>
+    <button type="button" class="icon-btn" id="panel-close" aria-label="Close"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg></button>
+  </div>
+  <div class="panel-body" id="panel-body"></div>
+</aside>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<noscript><p class="noscript">This directory needs JavaScript to search and display professors.</p></noscript>
 
 <script>
   // Paste your Google Form links here before publishing.
-  const CONFIG = {
+  window.RABTA_CONFIG = {
     correctionFormUrl: "",  // for professors: correct or remove an entry
     suggestFormUrl: ""      // for anyone: suggest a professor to add
   };
 </script>
-<script src="data.js?v=670d00ff"></script>
-<script>
-(function () {
-  const people = (window.PROFESSORS || []).slice();
-  const lastName = n => n.trim().split(/\s+/).pop().toLowerCase();
-  people.sort((a, b) => lastName(a.n).localeCompare(lastName(b.n)) || a.n.localeCompare(b.n));
-
-  people.forEach(p => { p._hay = [p.n, p.u, p.d, p.t, p.r, p.k, (p.a || []).join(" ")].join(" ").toLowerCase(); });
-
-  const PAGE = 50;
-  const state = { school: "", field: "", q: "", current: false, shown: PAGE };
-  const $ = id => document.getElementById(id);
-  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
-  const STATUS_LABEL = { emeritus: "Emeritus", adjunct: "Adjunct", visiting: "Visiting" };
-
-  // Lede count
-  $("lede").textContent = people.length + " faculty members at US universities who were born, raised or educated in Pakistan. Start with your own university, then narrow by field.";
-
-  // Alma-mater tiles
-  const schoolCounts = {};
-  people.forEach(p => (p.a || []).forEach(s => { schoolCounts[s] = (schoolCounts[s] || 0) + 1; }));
-  const schools = Object.keys(schoolCounts).sort((a, b) => schoolCounts[b] - schoolCounts[a] || a.localeCompare(b));
-  const tiles = [{ key: "", name: "All", count: people.length }].concat(schools.map(s => ({ key: s, name: s, count: schoolCounts[s] })));
-  const VISIBLE = 9;
-  $("schools").innerHTML = tiles.map((t, i) =>
-    '<li' + (i >= VISIBLE ? ' hidden' : '') + '><button type="button" class="school" data-school="' + esc(t.key) + '" aria-pressed="' + (t.key === "" ? "true" : "false") + '">' +
-    '<span class="sname">' + esc(t.name) + '</span>' +
-    '<span class="scount">' + t.count + (t.count === 1 ? " professor" : " professors") + '</span></button></li>'
-  ).join("");
-  const more = $("more-schools");
-  if (tiles.length > VISIBLE) {
-    more.hidden = false;
-    more.textContent = "Show all " + schools.length + " universities";
-    more.addEventListener("click", () => {
-      const open = more.getAttribute("aria-expanded") === "true";
-      document.querySelectorAll("#schools li").forEach((li, i) => { if (i >= VISIBLE) li.hidden = open; });
-      more.setAttribute("aria-expanded", open ? "false" : "true");
-      more.textContent = open ? "Show all " + schools.length + " universities" : "Show fewer universities";
-    });
-  }
-  $("schools").addEventListener("click", e => {
-    const btn = e.target.closest(".school");
-    if (!btn) return;
-    state.school = btn.dataset.school;
-    document.querySelectorAll(".school").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
-    render();
-    document.querySelector(".guide").open = false;
-    $("toolbar").scrollIntoView({ block: "start", behavior: "auto" });
-  });
-
-  // Field select
-  const fields = Array.from(new Set(people.map(p => p.c))).sort();
-  $("field").insertAdjacentHTML("beforeend", fields.map(f => '<option value="' + esc(f) + '">' + esc(f) + '</option>').join(""));
-  $("field").addEventListener("change", e => { state.field = e.target.value; render(); });
-  let typing;
-  $("q").addEventListener("input", e => {
-    clearTimeout(typing);
-    typing = setTimeout(() => { state.q = e.target.value.trim().toLowerCase(); render(); }, 150);
-  });
-  $("current").addEventListener("change", e => { state.current = e.target.checked; render(); });
-
-  function matches(p) {
-    if (state.school && !(p.a || []).includes(state.school)) return false;
-    if (state.field && p.c !== state.field) return false;
-    if (state.current && p.s !== "active") return false;
-    if (state.q && !state.q.split(/\s+/).every(w => p._hay.includes(w))) return false;
-    return true;
-  }
-
-  function card(p) {
-    const badge = STATUS_LABEL[p.s] ? '<span class="badge">' + STATUS_LABEL[p.s] + '</span>' : "";
-    return '<li class="prof">' +
-      '<div><h3>' + esc(p.n) + '</h3>' +
-        '<p class="ptitle">' + esc(p.t) + '</p>' +
-        '<p class="place">' + esc(p.u) + '<br>' + esc(p.d) + '</p></div>' +
-      '<div><p class="research">' + esc(p.r) + '</p>' +
-        '<p class="tie"><span>Connection to Pakistan:</span> ' + esc(p.k) + '</p>' +
-        '<p class="actions"><a href="' + esc(p.p) + '" target="_blank" rel="noopener">Open faculty profile</a>' +
-          (p.e ? '<a class="source" href="' + esc(p.e) + '" target="_blank" rel="noopener">Source</a>' : "") + badge + '</p></div>' +
-    '</li>';
-  }
-
-  function anyFilter() { return state.school || state.field || state.q || state.current; }
-
-  function resetFilters() {
-    state.school = ""; state.field = ""; state.q = ""; state.current = false;
-    $("field").value = ""; $("q").value = ""; $("current").checked = false;
-    document.querySelectorAll(".school").forEach(b => b.setAttribute("aria-pressed", b.dataset.school === "" ? "true" : "false"));
-    render();
-  }
-
-  let list = [];
-
-  function render() {
-    list = people.filter(matches);
-    state.shown = PAGE;
-    $("results").innerHTML = list.length
-      ? list.slice(0, state.shown).map(card).join("")
-      : '<li class="empty"><p>No professors match these filters.</p><p>Try a broader search term, another field, or <button type="button" class="clear" id="clear-empty">clear all filters</button>.</p></li>';
-    const ce = $("clear-empty"); if (ce) ce.addEventListener("click", resetFilters);
-    $("count").innerHTML = (list.length === people.length ? "Showing all " + people.length + "." : list.length + " of " + people.length + " match.") +
-      (anyFilter() ? ' <button type="button" class="clear" id="clear">Clear filters</button>' : "");
-    const c = $("clear"); if (c) c.addEventListener("click", resetFilters);
-    updateMore();
-  }
-
-  function updateMore() {
-    const btn = $("show-more");
-    const left = list.length - state.shown;
-    btn.hidden = left <= 0;
-    btn.textContent = "Show " + Math.min(PAGE, left) + " more (" + left + " not shown yet)";
-  }
-
-  $("show-more").addEventListener("click", () => {
-    $("results").insertAdjacentHTML("beforeend", list.slice(state.shown, state.shown + PAGE).map(card).join(""));
-    state.shown += PAGE;
-    updateMore();
-  });
-
-  // Footer links
-  $("correction-line").innerHTML = "Are you listed here? You can ask for any change, or to be removed, and we’ll update it promptly: " +
-    (CONFIG.correctionFormUrl ? '<a href="' + esc(CONFIG.correctionFormUrl) + '" target="_blank" rel="noopener">request a correction or removal</a>.' : "correction form coming soon.");
-  $("suggest-line").innerHTML = "Know someone who should be here? " +
-    (CONFIG.suggestFormUrl ? '<a href="' + esc(CONFIG.suggestFormUrl) + '" target="_blank" rel="noopener">Suggest a professor</a>.' : "A suggestion form is coming soon.");
-  $("updated").textContent = window.DIRECTORY_UPDATED ? "Information last checked " + window.DIRECTORY_UPDATED + ". Titles change, so confirm details on the faculty profile." : "";
-  if (!CONFIG.correctionFormUrl) console.warn("Set CONFIG.correctionFormUrl in index.html before publishing.");
-
-  render();
-})();
-</script>
+<script src="data.js?v=9d3c9d5e"></script>
+<script type="module" src="assets/js/main.js"></script>
 </body>
 </html>

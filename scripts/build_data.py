@@ -170,6 +170,10 @@ CATEGORIES = [
     ("Engineering", r"engineer|electrical|mechanical|civil|chemical eng|aerospace|materials|industrial|petroleum|nuclear|structural|environmental eng|photonic|semiconductor|architect"),
     ("Business and management", r"business|management|marketing|accounting|supply chain|operations|entrepreneur|organizational|strategy|hospitality|logistics|real estate|\bmba\b"),
     ("Economics and finance", r"econom|financ|actuar|bank"),
+    ("Humanities and social sciences",
+     r"politic|sociolog|anthropolog|psycholog|histor|philosoph|religio|theolog|international relations|international affairs|"
+     r"public policy|social work|social science|linguist|literat|english|journalis|communication|media|\bart\b|arts\b|music|"
+     r"film|gender|ethnic|islamic|asian|south asia|global studies|humanities|criminal|geography|urban|languages?"),
     ("Natural sciences and mathematics",
      r"physics|chemistry|biolog|mathemat|statist|geolog|earth|astronom|ecology|botan|zoolog|biochem|neuroscience|"
      r"genetic|genomic|horticult|agricultur|plant|soil|environment|atmospher|ocean|marine|food science|entomol|forestry|natural science|science"),
@@ -270,6 +274,138 @@ def same_person(a, b):
     return bool(wa & wb)
 
 
+# Universities the Coverage tab doesn't list under the same name.
+STATE_OVERRIDES = {
+    "Indiana University": "IN",
+    "Weill Cornell Medicine": "NY",
+    "University of Mississippi Medical Center": "MS",
+    "Houston Methodist Academic Institute": "TX",
+    "University of Kansas Medical Center": "KS",
+    "University of Texas Southwestern Medical Center": "TX",
+    "University of California San Diego": "CA",
+    "University of Wisconsin-Madison": "WI",
+    "Colorado State University-Pueblo": "CO",
+    "National Defense University": "DC",
+    "University at Albany, State University of New York": "NY",
+    "City University of New York (College of Staten Island)": "NY",
+    "Rutgers University–Newark": "NJ",
+    "New Mexico State University": "NM",
+    "Franklin and Marshall College": "PA",
+    "Galen College of Nursing": "KY",
+}
+STATE_NAMES = {
+    "Alabama": "AL", "Alaska": "AK", "Arizona": "AZ", "Arkansas": "AR", "California": "CA", "Colorado": "CO",
+    "Connecticut": "CT", "Delaware": "DE", "Florida": "FL", "Georgia": "GA", "Hawaii": "HI", "Idaho": "ID",
+    "Illinois": "IL", "Indiana": "IN", "Iowa": "IA", "Kansas": "KS", "Kentucky": "KY", "Louisiana": "LA",
+    "Maine": "ME", "Maryland": "MD", "Massachusetts": "MA", "Michigan": "MI", "Minnesota": "MN",
+    "Mississippi": "MS", "Missouri": "MO", "Montana": "MT", "Nebraska": "NE", "Nevada": "NV",
+    "New Hampshire": "NH", "New Jersey": "NJ", "New Mexico": "NM", "New York": "NY", "North Carolina": "NC",
+    "North Dakota": "ND", "Ohio": "OH", "Oklahoma": "OK", "Oregon": "OR", "Pennsylvania": "PA",
+    "Rhode Island": "RI", "South Carolina": "SC", "South Dakota": "SD", "Tennessee": "TN", "Texas": "TX",
+    "Utah": "UT", "Vermont": "VT", "Virginia": "VA", "Washington": "WA", "West Virginia": "WV",
+    "Wisconsin": "WI", "Wyoming": "WY",
+}
+STATE_NAMES["District of Columbia"] = "DC"
+STATE_CODES = set(STATE_NAMES.values())
+# Working notes that sometimes sit inside the evidence quote.
+INTERNAL = re.compile(r"fetched|verified|flag|judgment|sweep|\bgate\b|parent|centrally|session|confirm|sheet|wave", re.I)
+META = re.compile(INTERNAL.pattern + r"|ruling|corroborat|project|\bper\b|\bpage\b|profile|listing|catalog|\blists?\b|"
+                  r"\bstates\b|\bCV\b|linked\s+from|newsletter|official|archive|record|website|spelling|"
+                  r"\bhttps?:|\.(com|org|edu|net)\b|announcement|news\s+site", re.I)
+NOTE_ASIDE = re.compile(INTERNAL.pattern + r"|\bpage\b|profile|\bper\b|listing|catalog|\bbio\b|biography|\bsource\b|\bsite\b", re.I)
+
+
+def load_coverage(path):
+    wb = openpyxl.load_workbook(path, read_only=True)
+    if "Coverage" not in wb.sheetnames:
+        return {}, 0
+    states = {}
+    for r in list(wb["Coverage"].iter_rows(values_only=True))[1:]:
+        if r and r[0] and len(r) > 1 and r[1]:
+            code = state_code(clean(r[1]))
+            if code:
+                states[clean(r[0]).lower()] = code
+    return states, len(states)
+
+
+def state_code(raw):
+    up = raw.strip().upper()
+    if up in STATE_CODES:
+        return up
+    for name, code in STATE_NAMES.items():
+        if raw.strip().lower().startswith(name.lower()):
+            return code
+    return ""
+
+
+def us_state(university, coverage):
+    if university in STATE_OVERRIDES:
+        return STATE_OVERRIDES[university]
+    if university.lower() in coverage:
+        return coverage[university.lower()]
+    if university.lower().startswith("uc ") or university.startswith("UC"):
+        return "CA"
+    for name in sorted(STATE_NAMES, key=len, reverse=True):
+        if name in university:
+            return STATE_NAMES[name]
+    return ""
+
+
+QUOTED = [
+    re.compile(r"“([^”]{25,})”"),
+    re.compile(r"\"([^\"]{25,})\""),
+    re.compile(r"(?<![A-Za-z])'([^']{25,}?)'(?![A-Za-z])"),
+]
+
+
+ABBREVIATIONS = {"dr", "mr", "mrs", "ms", "prof", "st", "jr", "sr", "no", "vs", "dept", "univ", "inc", "u.s", "e.g", "i.e"}
+
+
+def sentences_of(text):
+    out, start = [], 0
+    for m in re.finditer(r"[.!?]\s+(?=[A-Z])", text):
+        word = re.findall(r"([\w.]+)$", text[start:m.start()])
+        if word and (word[0].lower() in ABBREVIATIONS or len(word[0]) == 1 or re.fullmatch(r"(\w\.)+\w?", word[0])):
+            continue
+        out.append(text[start:m.end()].strip())
+        start = m.end()
+    out.append(text[start:].strip())
+    return [s for s in out if s]
+
+
+def source_quote(evidence):
+    """What the public source says, without research notes, or '' if it can't be shown cleanly."""
+    text = re.sub(r"\s*\([^()]*\)", lambda m: "" if NOTE_ASIDE.search(m.group(0)) else m.group(0), evidence)
+    quoted = [m.group(1) for rx in QUOTED for m in rx.finditer(text)]
+    quoted = [q for q in quoted if not META.search(q) and re.search(r"pakistan|karachi|lahore|islamabad|peshawar|"
+                                                                     r"rawalpindi|university|college|born|medical", q, re.I)]
+    if quoted:
+        q = max(quoted, key=len)
+    else:
+        q = " ".join(s for s in sentences_of(text) if not META.search(s))
+    q = q.strip(" '\"“”.;,") + ("" if q.rstrip().endswith((".", "…")) else "")
+    if len(q) < 20:
+        return ""
+    return q if len(q) <= 360 else q[:357].rsplit(" ", 1)[0] + "…"
+
+
+def link_type(raw):
+    t = raw.lower()
+    for key in ("multiple", "born", "origin", "educated"):
+        if key in t:
+            return key
+    return "educated"
+
+
+def slug(name, university, taken):
+    base = re.sub(r"[^a-z0-9]+", "-", (name + " " + university).lower()).strip("-")[:60].rstrip("-")
+    s, i = base, 2
+    while s in taken:
+        s, i = f"{base}-{i}", i + 1
+    taken.add(s)
+    return s
+
+
 def load_rows(path):
     wb = openpyxl.load_workbook(path, read_only=True)
     ws = wb["Professors"]
@@ -286,7 +422,9 @@ def load_rows(path):
 def build(path):
     curated = {p["n"]: p for p in json.loads(CURATED.read_text(encoding="utf-8"))} if CURATED.exists() else {}
     stats = {"rows": 0, "excluded_name": 0, "institutional": 0, "duplicate": 0, "no_profile": 0}
+    coverage, checked = load_coverage(path)
     people = []
+    ids = set()
     for row in load_rows(path):
         stats["rows"] += 1
         name = clean(row.get("Name"))
@@ -295,8 +433,8 @@ def build(path):
         if name in EXCLUDED:
             stats["excluded_name"] += 1
             continue
-        link_type = clean(row.get("Pakistan link type"))
-        if link_type.lower() == "institutional":
+        link_type_raw = clean(row.get("Pakistan link type"))
+        if link_type_raw.lower() == "institutional":
             stats["institutional"] += 1
             continue
         profile = clean(row.get("Faculty profile"))
@@ -316,22 +454,31 @@ def build(path):
             "t": title,
             "c": category(field, dept),
             "r": clean(row.get("Research area")) or field,
-            "k": connection(link_type, evidence, alma),
+            "k": connection(link_type_raw, evidence, alma),
             "a": alma,
             "s": status(clean(row.get("Status")), title),
             "p": profile,
         }
         if source.startswith("http") and source != profile:
             entry["e"] = source
+        extra = {
+            "f": field,
+            "l": link_type(link_type_raw),
+            "q": source_quote(evidence),
+            "st": us_state(entry["u"], coverage),
+            "m": 1 if "@" in str(row.get("University email (as published)") or "") else 0,
+        }
         if name in curated:
             cur = dict(curated[name])
             cur["c"] = LEGACY_CATEGORY.get(cur["c"], cur["c"])
             if "e" in entry and "e" not in cur:
                 cur["e"] = entry["e"]
             entry = cur
+        entry.update(extra)
         if any(p["n"] == name and same_person(p, entry) for p in people):
             stats["duplicate"] += 1
             continue
+        entry["id"] = slug(name, entry["u"], ids)
         people.append(entry)
 
     people.sort(key=lambda p: (p["n"].split()[-1].lower(), p["n"].lower()))
@@ -341,11 +488,22 @@ def build(path):
         "// Fields: n = name, u = US university, d = department, t = title, c = field,\n"
         "// r = research area, k = connection to Pakistan (from a public source),\n"
         "// a = Pakistani institutions attended, s = status (active | emeritus | adjunct | visiting),\n"
-        "// p = official or public profile link, e = source for the Pakistan connection (optional).\n"
+        "// p = official or public profile link, e = source for the Pakistan connection (optional),\n"
+        "// f = field as listed, l = link type (born | origin | educated | multiple), q = quote from the source,\n"
+        "// st = US state, m = 1 if the faculty profile publishes an email, id = stable link id.\n"
         "// No emails here, by design. Re-run the script instead of editing by hand.\n\n"
     )
     updated = date.today().strftime("%B %Y")
-    body = "window.DIRECTORY_UPDATED = " + json.dumps(updated) + ";\n\nwindow.PROFESSORS = [\n" + ",\n".join(lines) + "\n];\n"
+    meta = {
+        "updated": updated,
+        "universitiesChecked": checked,
+        "excludedInstitutional": stats["institutional"],
+    }
+    body = (
+        "window.DIRECTORY_UPDATED = " + json.dumps(updated) + ";\n"
+        "window.DIRECTORY_META = " + json.dumps(meta) + ";\n\n"
+        "window.PROFESSORS = [\n" + ",\n".join(lines) + "\n];\n"
+    )
     OUT.write_text(header + body, encoding="utf-8", newline="\n")
 
     version = hashlib.sha1(body.encode("utf-8")).hexdigest()[:8]
@@ -361,6 +519,8 @@ def build(path):
     print(f"Skipped: {stats['institutional']} institutional-only, {stats['excluded_name']} excluded by name, "
           f"{stats['duplicate']} duplicates, {stats['no_profile']} without a profile link")
     print(f"{with_alma} have a recognised Pakistani institution")
+    print(f"{sum(1 for p in people if p['st'])} have a US state; {sum(1 for p in people if p['q'])} have a source quote; "
+          f"{sum(p['m'] for p in people)} have an email on their profile")
     for c, n in sorted(cats.items(), key=lambda x: -x[1]):
         print(f"  {n:5d}  {c}")
 

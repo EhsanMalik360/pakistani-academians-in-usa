@@ -1,10 +1,29 @@
-# US professors connected to Pakistan — student directory
+# Rabta — US professors with roots in Pakistan
 
-A single-page, searchable directory that helps Pakistani students find and contact US faculty who were born, raised or educated in Pakistan. No server, no database, no build step.
+A single-page directory that helps Pakistani students find and contact US faculty who were born, raised or educated in Pakistan. Static files only: no server, no database, no build step for the site itself.
+
+Live site: https://ehsanmalik360.github.io/pakistani-academians-in-usa/
+
+## What's on the page
+
+- **Night sky** — every professor is a point of light, clustered by field. Hover to see who they are, click to open them.
+- **Bridge** — a flow chart from the ten largest Pakistani institutions to the US states where their graduates teach, plus a "find your university" search.
+- **Map** — a tile map of US states shaded by number of professors; hover or tap a state for its top institutions and field mix.
+- **Directory** — search with highlighting, filters with live counts (field, Pakistani institution, state, type of connection, active faculty, email on profile), card and list views, sorting, and shareable links for any search.
+- **Professor panel** — full details, the source quote, a first-email writer with a 150-word meter, similar professors, and previous/next navigation (arrow keys work).
+- **Saved list** — bookmark professors, then download a CSV or copy them as text. Stored only in the visitor's browser.
+- Light and dark themes, keyboard shortcuts (`/` to search, `Esc` to close), reduced-motion support, and mobile layouts.
 
 ## Files
 
-- `index.html` — the page (layout, search, filters, student email guide)
+- `index.html` — page structure and the form-link settings
+- `assets/css/main.css` — all styles and design tokens
+- `assets/js/main.js` — starts everything up; theme, navigation, hero search, footer
+- `assets/js/store.js` — data preparation, filter state, URL syncing, saved list
+- `assets/js/viz.js` — night sky, numbers, bridge chart and tile map
+- `assets/js/directory.js` — filters and results
+- `assets/js/panel.js` — professor details, email writer and saved list panel
+- `assets/js/utils.js` — small shared helpers
 - `data.js` — the list of professors, generated from the master sheet by `scripts/build_data.py`
 - `scripts/build_data.py` — turns the master sheet into `data.js`, keeping only student-facing columns
 - `scripts/curated.json` — hand-written wording for some professors; it overrides the generated entry with the same name
@@ -15,9 +34,9 @@ A single-page, searchable directory that helps Pakistani students find and conta
 2. **Create two Google Forms** (forms.google.com):
    - *Correction or removal* — fields: your name, your faculty profile link, what should change (or "please remove me").
    - *Suggest a professor* — fields: professor name, US university, faculty profile link, public source showing their connection to Pakistan.
-3. Paste both form links into the `CONFIG` block near the bottom of `index.html`:
+3. Paste both form links into the `RABTA_CONFIG` block near the bottom of `index.html`:
    ```js
-   const CONFIG = {
+   window.RABTA_CONFIG = {
      correctionFormUrl: "https://forms.gle/...",
      suggestFormUrl: "https://forms.gle/..."
    };
@@ -50,6 +69,8 @@ What the script does with each row of the `Professors` tab:
 - Maps the specific field to one of: Medicine and public health, Computer science, Engineering, Natural sciences and mathematics, Economics and finance, Business and management, Education, Law, Humanities and social sciences.
 - Reads the Pakistani institutions out of the evidence quote. These drive the "Where do you study?" tiles. To recognise a new institution or spelling, add a line to `INSTITUTIONS` in the script.
 - Writes a short "Connection to Pakistan" line (born in, grew up in, originally from, studied at), based on the link type and evidence.
+- Adds the field as listed, the link type, a cleaned quote from the public source (research notes removed), the US state (from the `Coverage` tab, with `STATE_OVERRIDES` for names it doesn't list), whether the profile publishes an email (yes/no only), and a stable id used in shareable links.
+- Records how many universities the `Coverage` tab checked, shown in the "About" section.
 - Drops emails, evidence quotes, notes, wave and date columns, and strips anything that looks like an email address.
 - Skips rows whose link type is `institutional`, names in `EXCLUDED`, and duplicates of the same person.
 
