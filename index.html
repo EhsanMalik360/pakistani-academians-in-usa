@@ -264,6 +264,16 @@
           <p id="correction-line">Are you listed here? You can ask for any change, or to be removed, and we’ll update it promptly.</p>
         </article>
       </div>
+      <div class="cta-band reveal">
+        <div>
+          <h3>Know someone who should be here?</h3>
+          <p>Suggest a professor with a public source, or ask us to correct or remove a listing. Messages come straight to the person who maintains the directory.</p>
+        </div>
+        <div class="cta-actions">
+          <button type="button" class="btn primary" data-form="suggest">Suggest a professor</button>
+          <button type="button" class="btn" data-form="correct">Correct or remove a listing</button>
+        </div>
+      </div>
       <p class="about-note reveal" id="about-note"></p>
     </div>
   </section>
@@ -304,8 +314,9 @@
 <script>
   // Paste your Google Form links here before publishing.
   window.RABTA_CONFIG = {
-    correctionFormUrl: "",  // for professors: correct or remove an entry
-    suggestFormUrl: ""      // for anyone: suggest a professor to add
+    // Where suggestion and correction forms are emailed (via formsubmit.co).
+    // After confirming the first email, you can replace the address with the alias FormSubmit sends you.
+    submitTo: ""
   };
 </script>
 <script src="data.js?v=9d3c9d5e"></script>

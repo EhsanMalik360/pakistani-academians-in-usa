@@ -126,6 +126,7 @@ function professorHtml(p) {
         <dt>Status</dt><dd>${esc(STATUS[p.s] || p.s)}${p.s !== "active" ? " — less likely to take new students" : ""}</dd>
         <dt>Contact</dt><dd>${p.m ? "Their faculty profile publishes an email address." : "Use the contact details on their faculty profile."} We don’t copy emails here.</dd>
       </dl>
+      <p class="p-fix">Something out of date? <button type="button" class="link-btn" data-form="correct" data-id="${esc(p.id)}">Suggest a correction</button> — or, if this is you, ask to be removed.</p>
     </section>
     <section class="p-section">
       <h3>Draft a first email</h3>
@@ -281,6 +282,19 @@ export function openSavedList() {
   $("#panel-body").innerHTML = savedHtml();
   panel().setAttribute("aria-label", "Saved professors");
   writeUrl(null);
+}
+
+export function openView({ label, html, mount }) {
+  mode = "view";
+  current = null;
+  show();
+  $("#panel-nav").hidden = true;
+  const body = $("#panel-body");
+  body.innerHTML = html;
+  body.scrollTop = 0;
+  panel().setAttribute("aria-label", label);
+  writeUrl(null);
+  if (mount) mount(body);
 }
 
 function step(dir) {

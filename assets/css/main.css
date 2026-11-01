@@ -792,6 +792,82 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 0
 .saved-empty { text-align: center; padding: 3rem 1rem; color: var(--muted); }
 .saved-empty svg { width: 42px; height: 42px; margin: 0 auto 1rem; color: var(--rule-2); }
 
+/* Forms */
+.p-fix { margin-top: 1rem; font-size: 0.88rem; color: var(--muted); }
+.form-switch { margin: 1.5rem 0 0.5rem; }
+.form-switch button { padding: 0.5rem 1rem; }
+.form-note { margin-top: 1rem; padding: 0.75rem 1rem; border-radius: 10px; background: var(--brass-soft); color: var(--ink); font-size: 0.9rem; }
+.form-note code { font-family: var(--mono); font-size: 0.85em; }
+.rform { margin-top: 1.25rem; }
+.rform-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem 0.9rem; }
+.rform-you { margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid var(--rule); }
+.ff-section { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); }
+.ff { display: grid; gap: 0.35rem; align-content: start; min-width: 0; margin: 0; padding: 0; border: 0; }
+.wide { grid-column: 1 / -1; }
+.ff-label { font-size: 0.87rem; font-weight: 600; color: var(--ink); }
+.ff-label i { color: var(--danger); font-style: normal; }
+.ff-label em { font-style: normal; font-weight: 400; color: var(--muted); font-size: 0.8rem; margin-left: 0.25rem; }
+.ff input:not([type="radio"]):not([type="checkbox"]), .ff textarea {
+  width: 100%; font: inherit; font-size: 0.95rem; color: var(--ink); background: var(--surface);
+  border: 1px solid var(--rule-2); border-radius: 10px; padding: 0.65rem 0.8rem; outline: none; resize: vertical;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.ff input:focus, .ff textarea:focus { border-color: var(--accent); box-shadow: 0 0 0 4px color-mix(in srgb, var(--accent) 15%, transparent); }
+.ff [aria-invalid="true"] { border-color: var(--danger) !important; box-shadow: 0 0 0 4px color-mix(in srgb, var(--danger) 12%, transparent) !important; }
+.ff-hint { color: var(--muted); font-size: 0.8rem; line-height: 1.4; }
+.ff-err { color: var(--danger); font-size: 0.8rem; min-height: 0; }
+.ff-err:empty { display: none; }
+.ff-choices { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.ff-choices legend { margin-bottom: 0.5rem; width: 100%; }
+.ff-choices label {
+  display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; font-size: 0.9rem;
+  border: 1px solid var(--rule-2); border-radius: 999px; padding: 0.45rem 0.9rem; background: var(--surface);
+  transition: border-color 0.2s, background 0.2s;
+}
+.ff-choices label:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); }
+.ff-choices input, .ff-check input { accent-color: var(--accent); width: 1rem; height: 1rem; margin: 0; }
+.ff-check { display: flex; align-items: center; gap: 0.6rem; font-size: 0.92rem; cursor: pointer; padding: 0.6rem 0.8rem; border-radius: 10px; border: 1px solid transparent; }
+.ff-check.invalid { border-color: var(--danger); background: color-mix(in srgb, var(--danger) 7%, transparent); }
+.ff-check.invalid::after { content: "Needed for removal requests"; color: var(--danger); font-size: 0.8rem; margin-left: auto; }
+.hp { position: absolute; left: -9999px; width: 1px; height: 1px; opacity: 0; }
+.rform-bar { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1.5rem; flex-wrap: wrap; }
+.form-status { color: var(--muted); font-size: 0.9rem; flex: 1; }
+.btn.loading { position: relative; color: transparent !important; pointer-events: none; }
+.btn.loading::after {
+  content: ""; position: absolute; width: 18px; height: 18px; border-radius: 50%;
+  border: 2px solid var(--accent-ink); border-right-color: transparent; animation: spin 0.7s linear infinite;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.form-fine { margin-top: 0.9rem; font-size: 0.8rem; color: var(--muted); }
+.form-done { text-align: center; padding: 3rem 0.5rem; }
+.form-done-mark {
+  width: 72px; height: 72px; border-radius: 50%; display: grid; place-items: center; margin: 0 auto 1.25rem;
+  background: var(--accent); color: var(--accent-ink); animation: pop 0.6s var(--ease) both;
+}
+.form-done-mark svg { width: 34px; height: 34px; stroke-width: 2.4; stroke-dasharray: 30; stroke-dashoffset: 30; animation: tick 0.6s 0.25s var(--ease) forwards; }
+@keyframes tick { to { stroke-dashoffset: 0; } }
+.form-done h2 { font-size: 2rem; font-weight: 500; }
+.form-done p { color: var(--ink-2); max-width: 26rem; margin: 0.6rem auto 1.5rem; }
+
+.cta-band {
+  margin-top: 1rem; display: flex; align-items: center; justify-content: space-between; gap: 1.5rem 2.5rem; flex-wrap: wrap;
+  padding: clamp(1.5rem, 3vw, 2.25rem); border-radius: var(--radius);
+  background: var(--night); color: var(--night-ink); position: relative; overflow: hidden;
+}
+.cta-band::before {
+  content: ""; position: absolute; inset: 0;
+  background: radial-gradient(50% 120% at 100% 0%, rgba(69, 214, 178, 0.18), transparent 70%);
+  pointer-events: none;
+}
+.cta-band > * { position: relative; }
+.cta-band h3 { font-size: clamp(1.4rem, 2.6vw, 1.9rem); font-weight: 500; }
+.cta-band p { color: var(--night-muted); margin-top: 0.4rem; max-width: 36rem; }
+.cta-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+.cta-band .btn.primary { background: var(--g0); border-color: var(--g0); color: var(--night); }
+.cta-band .btn:not(.primary) { background: transparent; color: var(--night-ink); border-color: rgba(234, 241, 236, 0.3); }
+.cta-band .btn:not(.primary):hover { border-color: var(--night-ink); }
+.footer .link-btn { color: var(--g0); }
+
 /* Toast */
 .toast {
   position: fixed; left: 50%; bottom: 1.5rem; z-index: 80; transform: translate(-50%, 150%);
@@ -853,6 +929,7 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 0
   .stat:last-child { grid-column: 1 / -1; }
   .results-meta { align-items: flex-start; }
   .composer-form { grid-template-columns: 1fr; }
+  .rform-grid { grid-template-columns: 1fr; }
   .p-dl { grid-template-columns: 1fr; gap: 0.1rem; }
   .p-dl dd { margin-bottom: 0.6rem; }
   .tilemap { gap: 2px; }

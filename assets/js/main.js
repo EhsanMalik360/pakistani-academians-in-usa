@@ -3,6 +3,7 @@ import { people, META, CONFIG, totals, readUrl, update, only, byId, openProfesso
 import { initSky, initLegend, initStats, initBridge, initMap, goToDirectory } from "./viz.js";
 import { initDirectory, currentList } from "./directory.js";
 import { initPanel } from "./panel.js";
+import { initForms } from "./forms.js";
 
 function initTheme() {
   const btn = $("#theme-toggle");
@@ -105,14 +106,12 @@ function initCompare() {
 }
 
 function initFooter() {
-  const link = (url, text) => `<a href="${esc(url)}" target="_blank" rel="noopener">${esc(text)}</a>`;
+  const btn = (type, text) => `<button type="button" class="link-btn" data-form="${type}">${esc(text)}</button>`;
   $("#correction-line").innerHTML =
-    "Are you listed here? You can ask for any change, or to be removed, and we’ll update it promptly. " +
-    (CONFIG.correctionFormUrl ? link(CONFIG.correctionFormUrl, "Request a correction or removal") + "." : "A correction form is coming soon.");
+    "Are you listed here? You can ask for any change, or to be removed, and we’ll update it promptly. " + btn("correct", "Request a correction or removal") + ".";
   $("#suggest-line").innerHTML =
-    "Know someone who should be here? " +
-    (CONFIG.suggestFormUrl ? link(CONFIG.suggestFormUrl, "Suggest a professor") + "." : "A suggestion form is coming soon.") +
-    (CONFIG.correctionFormUrl ? " Listed and want a change? " + link(CONFIG.correctionFormUrl, "Request a correction or removal") + "." : "");
+    "Know someone who should be here? " + btn("suggest", "Suggest a professor") +
+    ". Listed and want a change? " + btn("correct", "Request a correction or removal") + ".";
   $("#updated").textContent = META.updated || window.DIRECTORY_UPDATED
     ? `Information last checked ${META.updated || window.DIRECTORY_UPDATED}. Titles change, so confirm details on the faculty profile.`
     : "";
@@ -139,6 +138,7 @@ function boot() {
   initMap();
   initDirectory();
   initPanel();
+  initForms();
   initHeroSearch();
   initCompare();
   initFooter();

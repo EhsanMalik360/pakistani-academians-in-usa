@@ -23,6 +23,7 @@ Live site: https://ehsanmalik360.github.io/pakistani-academians-in-usa/
 - `assets/js/viz.js` — night sky, numbers, bridge chart and tile map
 - `assets/js/directory.js` — filters and results
 - `assets/js/panel.js` — professor details, email writer and saved list panel
+- `assets/js/forms.js` — the suggest-a-professor and correction/removal form, which sends to your email
 - `assets/js/utils.js` — small shared helpers
 - `data.js` — the list of professors, generated from the master sheet by `scripts/build_data.py`
 - `scripts/build_data.py` — turns the master sheet into `data.js`, keeping only student-facing columns
@@ -31,16 +32,13 @@ Live site: https://ehsanmalik360.github.io/pakistani-academians-in-usa/
 ## Before you publish
 
 1. **Restrict your master Google Sheet.** It contains emails and research notes. Set sharing to "Restricted" and keep it as your private working copy. Only `data.js` goes public.
-2. **Create two Google Forms** (forms.google.com):
-   - *Correction or removal* — fields: your name, your faculty profile link, what should change (or "please remove me").
-   - *Suggest a professor* — fields: professor name, US university, faculty profile link, public source showing their connection to Pakistan.
-3. Paste both form links into the `RABTA_CONFIG` block near the bottom of `index.html`:
-   ```js
-   window.RABTA_CONFIG = {
-     correctionFormUrl: "https://forms.gle/...",
-     suggestFormUrl: "https://forms.gle/..."
-   };
-   ```
+2. **Switch on the suggestion and correction form.** It's built into the site and emails each submission to you through [FormSubmit](https://formsubmit.co), so there's no server or account to manage.
+   - Put your email in the `RABTA_CONFIG` block near the bottom of `index.html`:
+     ```js
+     window.RABTA_CONFIG = { submitTo: "you@example.com" };
+     ```
+   - Push, open the live site, and send one test suggestion. FormSubmit emails you a one-time confirmation link; click it. Later submissions arrive as normal emails, and you can press Reply to answer the sender.
+   - To keep your address out of the public page source, copy the random alias FormSubmit gives you after confirmation (it looks like `a1b2c3d4e5...`) and use it instead of the email: `submitTo: "a1b2c3d4e5..."`.
 
 ## Publish on GitHub Pages
 

@@ -150,6 +150,7 @@ function emptyState() {
       ${filterCount() ? `<button type="button" class="btn" data-empty="filters">Remove filters</button>` : ""}
       <button type="button" class="btn primary" data-empty="all">Start over</button>
     </div>
+    <p style="margin:1.25rem 0 0">Think someone is missing? <button type="button" class="link-btn" data-form="suggest">Suggest a professor</button></p>
   </div>`;
 }
 
