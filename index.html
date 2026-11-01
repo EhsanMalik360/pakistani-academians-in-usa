@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>US professors connected to Pakistan — a directory for students</title>
+<meta name="description" content="Find professors at US universities who were born, raised or educated in Pakistan. Search by field and by the Pakistani university they attended, then write a strong first email.">
+<meta property="og:title" content="US professors connected to Pakistan — a directory for students">
+<meta property="og:description" content="Search by field and by the Pakistani university they attended: UET, NUST, Aga Khan, Dow, LUMS, Punjab University and more.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,500;7..72,700&family=Public+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #EEF2EF;
+    --surface: #FFFFFF;
+    --ink: #142019;
+    --muted: #56645D;
+    --line: #D3DCD7;
+    --accent: #0A6A4B;
+    --accent-ink: #FFFFFF;
+    --chip: #E0EBE5;
+    --chip-hover: #D2E3DA;
+    --focus: #0A6A4B;
+    color-scheme: light;
+    box-sizing: border-box;
+    padding-top: env(safe-area-inset-top, 0px);
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0E1412;
+      --surface: #151D1A;
+      --ink: #E6EEEA;
+      --muted: #98A9A1;
+      --line: #27342F;
+      --accent: #5CCB9F;
+      --accent-ink: #08140F;
+      --chip: #1B2A24;
+      --chip-hover: #23372F;
+      --focus: #5CCB9F;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0E1412; --surface: #151D1A; --ink: #E6EEEA; --muted: #98A9A1; --line: #27342F;
+    --accent: #5CCB9F; --accent-ink: #08140F; --chip: #1B2A24; --chip-hover: #23372F; --focus: #5CCB9F;
+    color-scheme: dark;
+  }
+  *, *::before, *::after { box-sizing: inherit; }
+  html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Public Sans", system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
+    font-size: 1rem;
+    line-height: 1.55;
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: var(--accent); text-underline-offset: 0.18em; }
+  :focus-visible { outline: 3px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
+  .wrap { max-width: 68rem; margin: 0 auto; padding: 0 1.25rem; }
+
+  /* Hero */
+  header { padding: 3.5rem 0 2rem; }
+  h1, h2, h3 { font-family: "Literata", Georgia, "Times New Roman", serif; font-weight: 700; }
+  h1 {
+    font-size: clamp(2rem, 5vw, 3.25rem);
+    line-height: 1.1;
+    letter-spacing: -0.015em;
+    margin: 0 0 1rem;
+    max-width: 22ch;
+  }
+  .lede { font-size: 1.125rem; color: var(--muted); max-width: 40rem; margin: 0 0 2.25rem; }
+  .start-label { font-size: 1.25rem; margin: 0 0 0.25rem; }
+  .start-hint { color: var(--muted); margin: 0 0 1rem; font-size: 0.95rem; }
+
+  /* The one bold element: alma-mater tiles */
+  .schools {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(12.5rem, 1fr));
+    gap: 0.5rem;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  .schools li { display: flex; }
+  .schools li[hidden] { display: none; }
+  .school {
+    flex: 1;
+    width: 100%;
+    text-align: left;
+    border: 0;
+    background: var(--chip);
+    color: var(--ink);
+    padding: 0.8rem 0.95rem 0.75rem;
+    border-radius: 0.6rem;
+    font: inherit;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-height: 4.25rem;
+  }
+  .school:hover { background: var(--chip-hover); }
+  .school .sname { font-weight: 600; line-height: 1.25; }
+  .school .scount { font-size: 0.85rem; color: var(--muted); }
+  .school[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); }
+  .school[aria-pressed="true"] .scount { color: var(--accent-ink); opacity: 0.85; }
+
+  .more-schools {
+    margin: 0.75rem 0 0;
+    font: inherit; font-weight: 600; background: none; border: 0; padding: 0;
+    color: var(--accent); text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer;
+  }
+
+  /* Guide */
+  .guide {
+    margin: 2.5rem 0 0;
+    background: var(--surface);
+    border-left: 4px solid var(--accent);
+    border-radius: 0 0.5rem 0.5rem 0;
+    padding: 1.1rem 1.4rem;
+  }
+  .guide summary {
+    cursor: pointer;
+    font-family: "Literata", Georgia, serif;
+    font-weight: 700;
+    font-size: 1.2rem;
+  }
+  .guide ul { margin: 0.9rem 0 0.25rem; padding-left: 1.2rem; max-width: 46rem; }
+  .guide li { margin: 0.45rem 0; }
+  .guide p { margin: 0.75rem 0 0; color: var(--muted); max-width: 46rem; }
+
+  /* Toolbar */
+  .toolbar {
+    margin: 2.5rem 0 0;
+    display: grid;
+    grid-template-columns: 1fr minmax(12rem, 16rem);
+    gap: 0.75rem;
+    align-items: end;
+  }
+  .field label { display: block; font-size: 0.9rem; font-weight: 600; margin-bottom: 0.3rem; }
+  .field input, .field select {
+    width: 100%;
+    font: inherit;
+    color: var(--ink);
+    background: var(--surface);
+    border: 1px solid var(--line);
+    border-radius: 0.5rem;
+    padding: 0.65rem 0.8rem;
+  }
+  .options {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 0.5rem 1.5rem;
+  }
+  .check { display: inline-flex; gap: 0.5rem; align-items: center; cursor: pointer; }
+  .check input { width: 1.1rem; height: 1.1rem; accent-color: var(--accent); }
+  .count { color: var(--muted); margin: 0; }
+  .clear {
+    font: inherit; background: none; border: 0; color: var(--accent);
+    text-decoration: underline; text-underline-offset: 0.18em; cursor: pointer; padding: 0;
+  }
+
+  /* Results */
+  .results {
+    margin: 1rem 0 0;
+    padding: 0;
+    list-style: none;
+    background: var(--surface);
+    border-radius: 0.75rem;
+    overflow: hidden;
+  }
+  .prof {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    gap: 0.4rem 2rem;
+    padding: 1.25rem 1.4rem;
+    border-top: 1px solid var(--line);
+  }
+  .prof:first-child { border-top: 0; }
+  .prof h3 { font-size: 1.2rem; margin: 0 0 0.2rem; line-height: 1.25; }
+  .prof .ptitle { margin: 0; font-size: 0.95rem; }
+  .prof .place { margin: 0.35rem 0 0; color: var(--muted); font-size: 0.95rem; }
+  .prof .research { margin: 0; }
+  .prof .tie { margin: 0.45rem 0 0; font-size: 0.95rem; }
+  .prof .tie span { color: var(--muted); }
+  .prof .actions { margin: 0.6rem 0 0; display: flex; gap: 0.75rem; align-items: center; flex-wrap: wrap; }
+  .prof .actions a { font-weight: 600; }
+  .badge {
+    font-size: 0.8rem;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    border: 1px solid var(--line);
+    color: var(--muted);
+  }
+  .empty { padding: 2rem 1.4rem; }
+  .empty p { margin: 0 0 0.5rem; }
+
+  footer { padding: 3rem 0 4rem; color: var(--muted); font-size: 0.95rem; }
+  footer h2 { color: var(--ink); font-size: 1.15rem; margin: 0 0 0.5rem; }
+  footer p { max-width: 46rem; margin: 0 0 0.9rem; }
+
+  @media (max-width: 44rem) {
+    header { padding-top: 2.25rem; }
+    .toolbar { grid-template-columns: 1fr; }
+    .prof { grid-template-columns: 1fr; padding: 1.1rem 1rem; }
+    .guide { padding: 1rem 1.1rem; }
+    .schools { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    html { scroll-behavior: smooth; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>Find a professor in the US who knows where you’re coming from</h1>
+    <p class="lede" id="lede">Faculty at US universities who were born, raised or educated in Pakistan. Start with your own university, then narrow by field.</p>
+
+    <h2 class="start-label" id="schools-label">Where do you study?</h2>
+    <p class="start-hint">Professors who studied at your university are often the most willing to reply.</p>
+    <ul class="schools" id="schools" aria-labelledby="schools-label"></ul>
+    <button type="button" class="more-schools" id="more-schools" aria-expanded="false" hidden></button>
+  </header>
+
+  <details class="guide" open>
+    <summary>Before you email a professor</summary>
+    <ul>
+      <li>Read one or two of their recent papers, and mention something specific from them in your email.</li>
+      <li>Ask one clear question they can answer in a few minutes. “Please guide me” is hard to reply to; “Is your lab taking PhD students in fall 2027?” is easy.</li>
+      <li>Keep it under 150 words. Say who you are, why them, and what you’re asking.</li>
+      <li>Write to each professor individually. Never send the same email to many professors at once.</li>
+      <li>If there’s no reply after two weeks, one short, polite follow-up is fine. After that, move on.</li>
+    </ul>
+    <p>Emails aren’t listed here. Open each professor’s faculty profile to find their current contact details.</p>
+  </details>
+
+  <section aria-labelledby="results-heading">
+    <h2 id="results-heading" class="visually-hidden" style="position:absolute;left:-9999px">Professors</h2>
+    <div class="toolbar" id="toolbar">
+      <div class="field">
+        <label for="q">Search by name, research topic or US university</label>
+        <input id="q" type="search" placeholder="e.g. computer vision, Stanford, cardiology" autocomplete="off">
+      </div>
+      <div class="field">
+        <label for="field">Field</label>
+        <select id="field"><option value="">All fields</option></select>
+      </div>
+      <div class="options">
+        <label class="check"><input type="checkbox" id="current"> Hide emeritus, adjunct and visiting faculty</label>
+        <p class="count" id="count" aria-live="polite"></p>
+      </div>
+    </div>
+    <ul class="results" id="results"></ul>
+  </section>
+
+  <footer>
+    <h2>How people are listed</h2>
+    <p>Everyone here holds an appointment at a US university, and their connection to Pakistan is taken from a public source such as a university profile, a CV or a published interview. The “Connection to Pakistan” line repeats what that source says; it isn’t a label we’ve assigned.</p>
+    <p id="correction-line"></p>
+    <p id="suggest-line"></p>
+    <p id="updated"></p>
+  </footer>
+</div>
+
+<noscript><p style="padding:1rem">This directory needs JavaScript to search and display professors.</p></noscript>
+
+<script>
+  // Paste your Google Form links here before publishing.
+  const CONFIG = {
+    correctionFormUrl: "",  // for professors: correct or remove an entry
+    suggestFormUrl: ""      // for anyone: suggest a professor to add
+  };
+</script>
+<script src="data.js"></script>
+<script>
+(function () {
+  const people = (window.PROFESSORS || []).slice();
+  const lastName = n => n.trim().split(/\s+/).pop().toLowerCase();
+  people.sort((a, b) => lastName(a.n).localeCompare(lastName(b.n)) || a.n.localeCompare(b.n));
+
+  const state = { school: "", field: "", q: "", current: false };
+  const $ = id => document.getElementById(id);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const STATUS_LABEL = { emeritus: "Emeritus", adjunct: "Adjunct", visiting: "Visiting" };
+
+  // Lede count
+  $("lede").textContent = people.length + " faculty members at US universities who were born, raised or educated in Pakistan. Start with your own university, then narrow by field.";
+
+  // Alma-mater tiles
+  const schoolCounts = {};
+  people.forEach(p => (p.a || []).forEach(s => { schoolCounts[s] = (schoolCounts[s] || 0) + 1; }));
+  const schools = Object.keys(schoolCounts).sort((a, b) => schoolCounts[b] - schoolCounts[a] || a.localeCompare(b));
+  const tiles = [{ key: "", name: "All", count: people.length }].concat(schools.map(s => ({ key: s, name: s, count: schoolCounts[s] })));
+  const VISIBLE = 9;
+  $("schools").innerHTML = tiles.map((t, i) =>
+    '<li' + (i >= VISIBLE ? ' hidden' : '') + '><button type="button" class="school" data-school="' + esc(t.key) + '" aria-pressed="' + (t.key === "" ? "true" : "false") + '">' +
+    '<span class="sname">' + esc(t.name) + '</span>' +
+    '<span class="scount">' + t.count + (t.count === 1 ? " professor" : " professors") + '</span></button></li>'
+  ).join("");
+  const more = $("more-schools");
+  if (tiles.length > VISIBLE) {
+    more.hidden = false;
+    more.textContent = "Show all " + schools.length + " universities";
+    more.addEventListener("click", () => {
+      const open = more.getAttribute("aria-expanded") === "true";
+      document.querySelectorAll("#schools li").forEach((li, i) => { if (i >= VISIBLE) li.hidden = open; });
+      more.setAttribute("aria-expanded", open ? "false" : "true");
+      more.textContent = open ? "Show all " + schools.length + " universities" : "Show fewer universities";
+    });
+  }
+  $("schools").addEventListener("click", e => {
+    const btn = e.target.closest(".school");
+    if (!btn) return;
+    state.school = btn.dataset.school;
+    document.querySelectorAll(".school").forEach(b => b.setAttribute("aria-pressed", b === btn ? "true" : "false"));
+    render();
+    document.querySelector(".guide").open = false;
+    $("toolbar").scrollIntoView({ block: "start", behavior: "auto" });
+  });
+
+  // Field select
+  const fields = Array.from(new Set(people.map(p => p.c))).sort();
+  $("field").insertAdjacentHTML("beforeend", fields.map(f => '<option value="' + esc(f) + '">' + esc(f) + '</option>').join(""));
+  $("field").addEventListener("change", e => { state.field = e.target.value; render(); });
+  $("q").addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+  $("current").addEventListener("change", e => { state.current = e.target.checked; render(); });
+
+  function matches(p) {
+    if (state.school && !(p.a || []).includes(state.school)) return false;
+    if (state.field && p.c !== state.field) return false;
+    if (state.current && p.s !== "active") return false;
+    if (state.q) {
+      const hay = [p.n, p.u, p.d, p.t, p.r, p.k, (p.a || []).join(" ")].join(" ").toLowerCase();
+      if (!state.q.split(/\s+/).every(w => hay.includes(w))) return false;
+    }
+    return true;
+  }
+
+  function card(p) {
+    const badge = STATUS_LABEL[p.s] ? '<span class="badge">' + STATUS_LABEL[p.s] + '</span>' : "";
+    return '<li class="prof">' +
+      '<div><h3>' + esc(p.n) + '</h3>' +
+        '<p class="ptitle">' + esc(p.t) + '</p>' +
+        '<p class="place">' + esc(p.u) + '<br>' + esc(p.d) + '</p></div>' +
+      '<div><p class="research">' + esc(p.r) + '</p>' +
+        '<p class="tie"><span>Connection to Pakistan:</span> ' + esc(p.k) + '</p>' +
+        '<p class="actions"><a href="' + esc(p.p) + '" target="_blank" rel="noopener">Open faculty profile</a>' + badge + '</p></div>' +
+    '</li>';
+  }
+
+  function anyFilter() { return state.school || state.field || state.q || state.current; }
+
+  function resetFilters() {
+    state.school = ""; state.field = ""; state.q = ""; state.current = false;
+    $("field").value = ""; $("q").value = ""; $("current").checked = false;
+    document.querySelectorAll(".school").forEach(b => b.setAttribute("aria-pressed", b.dataset.school === "" ? "true" : "false"));
+    render();
+  }
+
+  function render() {
+    const list = people.filter(matches);
+    $("results").innerHTML = list.length
+      ? list.map(card).join("")
+      : '<li class="empty"><p>No professors match these filters.</p><p>Try a broader search term, another field, or <button type="button" class="clear" id="clear-empty">clear all filters</button>.</p></li>';
+    const ce = $("clear-empty"); if (ce) ce.addEventListener("click", resetFilters);
+    $("count").innerHTML = "Showing " + list.length + " of " + people.length + "." +
+      (anyFilter() ? ' <button type="button" class="clear" id="clear">Clear filters</button>' : "");
+    const c = $("clear"); if (c) c.addEventListener("click", resetFilters);
+  }
+
+  // Footer links
+  $("correction-line").innerHTML = "Are you listed here? You can ask for any change, or to be removed, and we’ll update it promptly: " +
+    (CONFIG.correctionFormUrl ? '<a href="' + esc(CONFIG.correctionFormUrl) + '" target="_blank" rel="noopener">request a correction or removal</a>.' : "correction form coming soon.");
+  $("suggest-line").innerHTML = "Know someone who should be here? " +
+    (CONFIG.suggestFormUrl ? '<a href="' + esc(CONFIG.suggestFormUrl) + '" target="_blank" rel="noopener">Suggest a professor</a>.' : "A suggestion form is coming soon.");
+  $("updated").textContent = window.DIRECTORY_UPDATED ? "Information last checked " + window.DIRECTORY_UPDATED + ". Titles change, so confirm details on the faculty profile." : "";
+  if (!CONFIG.correctionFormUrl) console.warn("Set CONFIG.correctionFormUrl in index.html before publishing.");
+
+  render();
+})();
+</script>
+</body>
+</html>
