@@ -1,0 +1,4 @@
+# The master sheet contains emails and research notes. Never commit it.
+*.xlsx
+*.csv
+__pycache__/

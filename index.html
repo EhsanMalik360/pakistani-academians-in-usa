@@ -202,6 +202,17 @@
     border: 1px solid var(--line);
     color: var(--muted);
   }
+  .prof .actions .source { font-weight: 400; color: var(--muted); }
+  .show-more {
+    display: block;
+    margin: 1rem auto 0;
+    font: inherit; font-weight: 600;
+    color: var(--accent-ink); background: var(--accent);
+    border: 0; border-radius: 0.5rem;
+    padding: 0.7rem 1.4rem;
+    cursor: pointer;
+  }
+  .show-more[hidden] { display: none; }
   .empty { padding: 2rem 1.4rem; }
   .empty p { margin: 0 0 0.5rem; }
 
@@ -262,6 +273,7 @@
       </div>
     </div>
     <ul class="results" id="results"></ul>
+    <button type="button" class="show-more" id="show-more" hidden></button>
   </section>
 
   <footer>
@@ -282,14 +294,17 @@
     suggestFormUrl: ""      // for anyone: suggest a professor to add
   };
 </script>
-<script src="data.js"></script>
+<script src="data.js?v=670d00ff"></script>
 <script>
 (function () {
   const people = (window.PROFESSORS || []).slice();
   const lastName = n => n.trim().split(/\s+/).pop().toLowerCase();
   people.sort((a, b) => lastName(a.n).localeCompare(lastName(b.n)) || a.n.localeCompare(b.n));
 
-  const state = { school: "", field: "", q: "", current: false };
+  people.forEach(p => { p._hay = [p.n, p.u, p.d, p.t, p.r, p.k, (p.a || []).join(" ")].join(" ").toLowerCase(); });
+
+  const PAGE = 50;
+  const state = { school: "", field: "", q: "", current: false, shown: PAGE };
   const $ = id => document.getElementById(id);
   const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
   const STATUS_LABEL = { emeritus: "Emeritus", adjunct: "Adjunct", visiting: "Visiting" };
@@ -333,17 +348,18 @@
   const fields = Array.from(new Set(people.map(p => p.c))).sort();
   $("field").insertAdjacentHTML("beforeend", fields.map(f => '<option value="' + esc(f) + '">' + esc(f) + '</option>').join(""));
   $("field").addEventListener("change", e => { state.field = e.target.value; render(); });
-  $("q").addEventListener("input", e => { state.q = e.target.value.trim().toLowerCase(); render(); });
+  let typing;
+  $("q").addEventListener("input", e => {
+    clearTimeout(typing);
+    typing = setTimeout(() => { state.q = e.target.value.trim().toLowerCase(); render(); }, 150);
+  });
   $("current").addEventListener("change", e => { state.current = e.target.checked; render(); });
 
   function matches(p) {
     if (state.school && !(p.a || []).includes(state.school)) return false;
     if (state.field && p.c !== state.field) return false;
     if (state.current && p.s !== "active") return false;
-    if (state.q) {
-      const hay = [p.n, p.u, p.d, p.t, p.r, p.k, (p.a || []).join(" ")].join(" ").toLowerCase();
-      if (!state.q.split(/\s+/).every(w => hay.includes(w))) return false;
-    }
+    if (state.q && !state.q.split(/\s+/).every(w => p._hay.includes(w))) return false;
     return true;
   }
 
@@ -355,7 +371,8 @@
         '<p class="place">' + esc(p.u) + '<br>' + esc(p.d) + '</p></div>' +
       '<div><p class="research">' + esc(p.r) + '</p>' +
         '<p class="tie"><span>Connection to Pakistan:</span> ' + esc(p.k) + '</p>' +
-        '<p class="actions"><a href="' + esc(p.p) + '" target="_blank" rel="noopener">Open faculty profile</a>' + badge + '</p></div>' +
+        '<p class="actions"><a href="' + esc(p.p) + '" target="_blank" rel="noopener">Open faculty profile</a>' +
+          (p.e ? '<a class="source" href="' + esc(p.e) + '" target="_blank" rel="noopener">Source</a>' : "") + badge + '</p></div>' +
     '</li>';
   }
 
@@ -368,16 +385,33 @@
     render();
   }
 
+  let list = [];
+
   function render() {
-    const list = people.filter(matches);
+    list = people.filter(matches);
+    state.shown = PAGE;
     $("results").innerHTML = list.length
-      ? list.map(card).join("")
+      ? list.slice(0, state.shown).map(card).join("")
       : '<li class="empty"><p>No professors match these filters.</p><p>Try a broader search term, another field, or <button type="button" class="clear" id="clear-empty">clear all filters</button>.</p></li>';
     const ce = $("clear-empty"); if (ce) ce.addEventListener("click", resetFilters);
-    $("count").innerHTML = "Showing " + list.length + " of " + people.length + "." +
+    $("count").innerHTML = (list.length === people.length ? "Showing all " + people.length + "." : list.length + " of " + people.length + " match.") +
       (anyFilter() ? ' <button type="button" class="clear" id="clear">Clear filters</button>' : "");
     const c = $("clear"); if (c) c.addEventListener("click", resetFilters);
+    updateMore();
   }
+
+  function updateMore() {
+    const btn = $("show-more");
+    const left = list.length - state.shown;
+    btn.hidden = left <= 0;
+    btn.textContent = "Show " + Math.min(PAGE, left) + " more (" + left + " not shown yet)";
+  }
+
+  $("show-more").addEventListener("click", () => {
+    $("results").insertAdjacentHTML("beforeend", list.slice(state.shown, state.shown + PAGE).map(card).join(""));
+    state.shown += PAGE;
+    updateMore();
+  });
 
   // Footer links
   $("correction-line").innerHTML = "Are you listed here? You can ask for any change, or to be removed, and we’ll update it promptly: " +
