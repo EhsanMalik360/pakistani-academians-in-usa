@@ -159,7 +159,9 @@ async function submit(form) {
     store("rabta.contact", { name: data.name || "", email: data.email || "" });
     return { ok: true };
   } catch (err) {
-    status.textContent = "We couldn’t send that just now. Please check your connection and try again.";
+    status.textContent = /activat/i.test(err.message)
+      ? "The form is being set up and isn’t accepting messages yet. Please try again a little later."
+      : "We couldn’t send that just now. Please check your connection and try again.";
     console.error("Form submission failed:", err);
     return { ok: false };
   } finally {
