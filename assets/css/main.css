@@ -691,8 +691,6 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 0
 .principle-icon svg { width: 22px; height: 22px; }
 .principle h3 { font-size: 1.3rem; font-weight: 500; margin-bottom: 0.5rem; }
 .principle p { color: var(--ink-2); font-size: 0.95rem; }
-.about-note { margin-top: 1.75rem; color: var(--muted); font-size: 0.92rem; max-width: 52rem; }
-
 /* ==========================================================================
    Footer
    ========================================================================== */

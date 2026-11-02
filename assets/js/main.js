@@ -1,4 +1,4 @@
-import { $, $$, esc, fmt, store, reducedMotion, shortSchool, STATE_NAMES } from "./utils.js";
+import { $, $$, esc, store, reducedMotion, shortSchool, STATE_NAMES } from "./utils.js";
 import { people, META, CONFIG, totals, readUrl, update, only, byId, openProfessor } from "./store.js";
 import { initSky, initLegend, initStats, initBridge, initMap, goToDirectory } from "./viz.js";
 import { initDirectory, currentList } from "./directory.js";
@@ -115,11 +115,6 @@ function initFooter() {
   $("#updated").textContent = META.updated || window.DIRECTORY_UPDATED
     ? `Information last checked ${META.updated || window.DIRECTORY_UPDATED}. Titles change, so confirm details on the faculty profile.`
     : "";
-  const checked = META.universitiesChecked;
-  $("#about-note").textContent =
-    (checked ? `To build this list, ${fmt(checked)} US universities were checked department by department. ` : "") +
-    (META.excludedInstitutional ? `${fmt(META.excludedInstitutional)} people whose only link was working at a Pakistani institution are not listed, because the directory covers people born, raised or educated in Pakistan. ` : "") +
-    "Emeritus, adjunct and visiting faculty are marked, since they rarely take new students.";
 }
 
 function boot() {
