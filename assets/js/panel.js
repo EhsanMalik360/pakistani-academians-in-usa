@@ -81,7 +81,7 @@ function professorHtml(p) {
   const badges = [
     `<span class="badge">${esc(STATUS[p.s] || p.s)}</span>`,
     `<span class="badge">${esc(LINKS[p.l] || "Connection to Pakistan")}</span>`,
-    p.m ? `<span class="badge mail">Email on profile</span>` : "",
+    p.m ? `<span class="badge badge-mail">Email on profile</span>` : "",
   ].join("");
   const ties = p.a.length
     ? `<ul class="ties" style="margin-top:0.9rem">${p.a.map((s) => `<li><button type="button" class="tie" data-school="${esc(s)}">${esc(s)} · see all alumni</button></li>`).join("")}</ul>`

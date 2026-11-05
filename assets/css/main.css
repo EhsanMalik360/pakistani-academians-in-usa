@@ -624,8 +624,8 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 0
 .card-links a { font-weight: 500; text-decoration: none; display: inline-flex; gap: 0.25rem; align-items: center; }
 .card-links a svg { width: 14px; height: 14px; }
 .card-links a:hover { text-decoration: underline; }
-.badge { font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--rule-2); border-radius: 99px; padding: 0.05rem 0.45rem; }
-.badge.mail { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); }
+.badge { display: inline-flex; align-items: center; white-space: nowrap; line-height: 1.5; font-family: var(--mono); font-size: 0.68rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); border: 1px solid var(--rule-2); border-radius: 99px; padding: 0.1rem 0.55rem; }
+.badge-mail { color: var(--accent); border-color: color-mix(in srgb, var(--accent) 40%, transparent); background: var(--accent-soft); }
 
 /* List view */
 .grid[data-view="list"] { display: block; background: var(--surface); border: 1px solid var(--rule); border-radius: var(--radius); overflow: hidden; }
@@ -732,7 +732,7 @@ mark { background: var(--mark); color: inherit; border-radius: 3px; padding: 0 0
 .p-head h2 { font-size: clamp(1.7rem, 4vw, 2.3rem); line-height: 1.05; font-weight: 500; letter-spacing: -0.02em; }
 .p-title { margin-top: 1.1rem; font-size: 1.02rem; color: var(--ink); }
 .p-where { margin-top: 0.3rem; color: var(--ink-2); }
-.p-badges { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.9rem; }
+.p-badges { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin-top: 0.9rem; }
 .p-actions { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 1.4rem; }
 .p-section { margin-top: 2rem; }
 .p-section > h3 { font-family: var(--mono); font-size: 0.72rem; letter-spacing: 0.12em; text-transform: uppercase; font-weight: 500; color: var(--muted); margin-bottom: 0.7rem; display: flex; align-items: center; gap: 0.6rem; }
