@@ -5,8 +5,8 @@ import {
   toggleSaved, openProfessor, absoluteUrl, fieldColor,
 } from "./store.js";
 
-const BATCH = 24;
-const AUTO_LIMIT = 96;
+const BATCH = window.matchMedia("(max-width: 600px)").matches ? 10 : 18;
+const AUTO_LIMIT = BATCH;
 
 let list = [];
 let shown = 0;
@@ -20,7 +20,7 @@ export function card(p, i = 0, ws = words()) {
   const ties = p.a.length
     ? p.a.slice(0, 3).map((s) => `<li><button type="button" class="tie" data-school="${esc(s)}" title="Show everyone who studied at ${esc(s)}">${esc(shortSchool(s))}</button></li>`).join("")
     : `<li><span class="tie plain">${esc(LINKS[p.l] || "Connection to Pakistan")}</span></li>`;
-  const badge = p.s !== "active" ? `<span class="badge">${esc(STATUS[p.s] || p.s)}</span>` : p.m ? `<span class="badge badge-mail" title="Their faculty profile publishes an email address">Email on profile</span>` : "";
+  const badge = p.s !== "active" ? `<span class="badge">${esc(STATUS[p.s] || p.s)}</span>` : p.m ? `<span class="mail-dot" role="img" title="Email address on their faculty profile" aria-label="Email address on their faculty profile">${ICONS.mail}</span>` : "";
   return `<article class="card" style="--fc:${fieldColor(p)};--i:${i % BATCH}" data-id="${esc(p.id)}">
     <button type="button" class="card-hit" aria-label="Open details for ${esc(p.n)}"></button>
     <div class="card-top">
@@ -32,7 +32,7 @@ export function card(p, i = 0, ws = words()) {
     <p class="research">${highlight(p.r, ws)}</p>
     <ul class="ties" aria-label="Studied in Pakistan at">${ties}</ul>
     <div class="card-foot">
-      <span class="ftag">${esc(FIELD_SHORT[p.c] || p.c)}</span>
+      <span class="ftag" title="${esc(p.c)}">${esc(FIELD_SHORT[p.c] || p.c)}</span>
       <span class="card-links">${badge}<a href="${esc(p.p)}" target="_blank" rel="noopener">Profile ${ICONS.external}</a></span>
     </div>
   </article>`;

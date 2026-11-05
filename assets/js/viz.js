@@ -308,7 +308,7 @@ export function initBridge() {
   const rights = [...rightKeys, OTHER];
 
   function svg() {
-    const W = 1000, H = 640, padT = 44, padB = 12, gap = 12;
+    const W = 1000, H = 560, padT = 36, padB = 8, gap = 10;
     const total = [...links.values()].reduce((a, b) => a + b, 0);
     const scaleL = (H - padT - padB - gap * (leftKeys.length - 1)) / total;
     const scaleR = (H - padT - padB - gap * (rights.length - 1)) / total;
@@ -369,7 +369,7 @@ export function initBridge() {
 
   function bars() {
     const max = schoolTotals[0]?.[1] || 1;
-    return `<ul class="bars">${schoolTotals.slice(0, 12).map(([s, n]) => {
+    return `<ul class="bars">${schoolTotals.slice(0, 8).map(([s, n]) => {
       const st = totalsFor(s);
       return `<li><button type="button" data-s="${esc(s)}"><span class="bar-name">${esc(shortSchool(s))}</span><span class="bar-count">${n}</span>
         <span class="bar-track"><i style="width:${(n / max) * 100}%"></i></span>
