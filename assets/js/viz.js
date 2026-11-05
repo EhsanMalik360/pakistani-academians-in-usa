@@ -404,11 +404,11 @@ export function initBridge() {
     const s = g.dataset.s, t = g.dataset.t;
     const hotS = new Set(), hotT = new Set();
     $$(".band", root).forEach((b) => {
-      const hot = (s && b.dataset.s === s) || (t && b.dataset.t === t);
+      const hot = Boolean((s && b.dataset.s === s) || (t && b.dataset.t === t));
       b.classList.toggle("hot", hot);
       if (hot) { hotS.add(b.dataset.s); hotT.add(b.dataset.t); }
     });
-    $$(".node", root).forEach((n) => n.classList.toggle("hot", hotS.has(n.dataset.s) || hotT.has(n.dataset.t)));
+    $$(".node", root).forEach((n) => n.classList.toggle("hot", Boolean(hotS.has(n.dataset.s) || hotT.has(n.dataset.t))));
   };
   const blur = () => {
     delete root.dataset.focus;
